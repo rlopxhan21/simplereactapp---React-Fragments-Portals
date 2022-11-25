@@ -1,0 +1,33 @@
+.card__input {
+  background-color: #fff;
+  width: 40%;
+  margin: 1rem auto;
+}
+
+.inputfield {
+  margin-bottom: 1rem;
+}
+
+.inputfield label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.inputfield input {
+  width: 100%;
+}
+
+.btn {
+  padding: 0.25rem 0.5rem;
+}
+
+.btn-submit {
+  font-weight: bold;
+  background-color: blueviolet;
+  color: #fff;
+}
+
+.btn-submit:hover {
+  cursor: pointer;
+}
