@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useRef } from "react";
 
 import styles from "./Input.module.css";
 
@@ -8,6 +8,9 @@ import ErrorModel from "../UI/ErrorModel";
 const Input = (props) => {
   const [username, setUsername] = useState("");
   const [age, setAge] = useState("");
+
+  const usernameref = useRef();
+  const ageref = useRef();
 
   const [error, setError] = useState();
 
@@ -42,6 +45,10 @@ const Input = (props) => {
       username: username,
       age: age,
     };
+
+    console.log(usernameref.current.value);
+    console.log(ageref.current.value);
+
     props.onSubmition(enteredData);
     setUsername("");
     setAge("");
@@ -52,7 +59,7 @@ const Input = (props) => {
   };
 
   return (
-    <div>
+    <React.Fragment>
       <Card className={styles.card__input}>
         <form action="" method="" onSubmit={submitHandler}>
           <section className={styles.inputfield}>
@@ -63,6 +70,7 @@ const Input = (props) => {
               value={username}
               placeholder="Username..."
               onChange={usernameHandler}
+              ref={usernameref}
             />
           </section>
 
@@ -74,6 +82,7 @@ const Input = (props) => {
               value={age}
               placeholder="Age..."
               onChange={ageHandler}
+              ref={ageref}
             />
           </section>
           <input
@@ -83,8 +92,14 @@ const Input = (props) => {
           />
         </form>
       </Card>
-      {error && <ErrorModel onError={error} onRevert={revertHandler} />}
-    </div>
+      {error && (
+        <ErrorModel
+          title={error.title}
+          message={error.message}
+          onRevert={revertHandler}
+        />
+      )}
+    </React.Fragment>
   );
 };
 
