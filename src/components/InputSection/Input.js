@@ -3,10 +3,13 @@ import { useState } from "react";
 import styles from "./Input.module.css";
 
 import Card from "../UI/Card";
+import ErrorModel from "../UI/ErrorModel";
 
 const Input = (props) => {
   const [username, setUsername] = useState("");
   const [age, setAge] = useState("");
+
+  const [error, setError] = useState();
 
   const usernameHandler = (event) => {
     setUsername(event.target.value);
@@ -18,6 +21,22 @@ const Input = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
+
+    if (username.trim().length === 0 || age.trim().length === 0) {
+      setError({
+        title: "Invalid input",
+        message: "Please enter a valid name and age (non-empty values).",
+      });
+      return;
+    }
+
+    if (1 > +age || +age > 120) {
+      setError({
+        title: "Invalid input",
+        message: "Please enter a valid age (> 0).",
+      });
+      return;
+    }
     const enteredData = {
       id: Math.random().toString(),
       username: username,
@@ -28,37 +47,44 @@ const Input = (props) => {
     setAge("");
   };
 
-  return (
-    <Card className={styles.card__input}>
-      <form action="" method="" onSubmit={submitHandler}>
-        <section className={styles.inputfield}>
-          <label htmlFor="username">Username</label>
-          <input
-            id="username"
-            type="text"
-            value={username}
-            placeholder="Username..."
-            onChange={usernameHandler}
-          />
-        </section>
+  const revertHandler = () => {
+    setError(null);
+  };
 
-        <section className={styles.inputfield}>
-          <label htmlFor="age">Age (Years)</label>
+  return (
+    <div>
+      <Card className={styles.card__input}>
+        <form action="" method="" onSubmit={submitHandler}>
+          <section className={styles.inputfield}>
+            <label htmlFor="username">Username</label>
+            <input
+              id="username"
+              type="text"
+              value={username}
+              placeholder="Username..."
+              onChange={usernameHandler}
+            />
+          </section>
+
+          <section className={styles.inputfield}>
+            <label htmlFor="age">Age (Years)</label>
+            <input
+              id="age"
+              type="number"
+              value={age}
+              placeholder="Age..."
+              onChange={ageHandler}
+            />
+          </section>
           <input
-            id="age"
-            type="number"
-            value={age}
-            placeholder="Age..."
-            onChange={ageHandler}
+            className={`${styles.btn} ${styles["btn-submit"]}`}
+            type="submit"
+            value="Add User"
           />
-        </section>
-        <input
-          className={`${styles.btn} ${styles["btn-submit"]}`}
-          type="submit"
-          value="Add User"
-        />
-      </form>
-    </Card>
+        </form>
+      </Card>
+      {error && <ErrorModel onError={error} onRevert={revertHandler} />}
+    </div>
   );
 };
 
